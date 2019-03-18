@@ -3,8 +3,8 @@
 }
 
 .board {
-  height: 606px;
-  width: 606px;
+  height: 620px;
+  width: 620px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -13,13 +13,28 @@
 }
 
 .cell {
-  height: 200px;
   width: 200px;
-  border: 1px solid #999;
+  height: 205px;
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 100px;
+}
+
+.board .cell:nth-child(1),
+.board .cell:nth-child(2),
+.board .cell:nth-child(3),
+.board .cell:nth-child(4),
+.board .cell:nth-child(5),
+.board .cell:nth-child(6){
+  border-bottom: 5px solid #444;
+}
+
+.board .cell:nth-child(2),
+.board .cell:nth-child(5),
+.board .cell:nth-child(8){
+  border-left: 5px solid #444;
+  border-right: 5px solid #444;
 }
 
 .banner {
@@ -40,11 +55,9 @@
 @keyframes flash {
   0%, 100% {
     background-color: #9ad089;
-    opacity: 1;
   }
   50% {
-    background-color: #9ad089;
-    opacity: .5;
+    background-color: #9ad08963;
   }
 }
 
