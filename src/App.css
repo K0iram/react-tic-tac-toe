@@ -22,14 +22,6 @@
   font-size: 100px;
 }
 
-.taken-X {
-  background-color: red;
-}
-
-.taken-O {
-  background-color: blue;
-}
-
 .banner {
   margin: 20px 0 0;
 }
@@ -39,3 +31,20 @@
   display: flex;
   justify-content: center;
 }
+
+.winner {
+  background-color: #9ad089;
+  animation: flash ease-in-out 1.5s infinite;
+}
+
+@keyframes flash {
+  0%, 100% {
+    background-color: #9ad089;
+    opacity: 1;
+  }
+  50% {
+    background-color: #9ad089;
+    opacity: .5;
+  }
+}
+

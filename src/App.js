@@ -26,7 +26,8 @@ class App extends Component {
       7: null,
       8: null
     },
-    gameOver: false
+    gameOver: false,
+    winningRow: []
   }
 
   togglePlayer = () => (
@@ -46,26 +47,25 @@ class App extends Component {
 
     if(gameBoard[position] !== null) {
       return alert('Sorry That Spot Is Taken, Choose Again.')
-    } else {
-      gameBoard[position] = player
-
-      if (this.checkWin(player)) {
-        this.setState({
-          gameOver: true,
-          message: `Player ${player} has won!`
-        })
-      }
-
-      if (this.checkDraw(player)) {
-        this.setState({
-          gameOver: true,
-          message: `It's a draw!`
-        })
-      }
-
-      this.togglePlayer()
     }
 
+    gameBoard[position] = player
+
+    if (this.checkWin(player)) {
+      this.setState({
+        gameOver: true,
+        message: `Player ${player} has won!`
+      })
+    }
+
+    if (this.checkDraw(player)) {
+      this.setState({
+        gameOver: true,
+        message: `It's a draw!`
+      })
+    }
+
+    this.togglePlayer()
   }
 
   checkWin = (player) => {
@@ -74,16 +74,23 @@ class App extends Component {
 
     for (let i = 0; i < winningRows.length; i++) {
       let positionStore = []
-      for (let y = 0; y < winningRows[i].length; y++) {
-        let currentPosition = winningRows[i][y]
+      let winRow = []
+      for (let j = 0; j < winningRows[i].length; j++) {
+        let currentPosition = winningRows[i][j]
 
         if (gameBoard[currentPosition] === player) {
           positionStore.push(player)
+          winRow.push(currentPosition)
         }
 
-        if (positionStore.length > 2) {
+        if (positionStore.length >= 3) {
+          this.setWinStyle(winRow)
           playerHasWon = true
+          break
         }
+      }
+      if(playerHasWon){
+        break
       }
     }
 
@@ -94,18 +101,25 @@ class App extends Component {
     const boardValues = Object.values(this.state.gameBoard)
     let draw = false
 
-    for (let i = 0; i < boardValues.length; i++) {
-      if (!boardValues[i]){
-        return draw = false
-      } else if( i >= boardValues.length - 1 && !this.checkWin(player)){
-         return draw = true
-      }
-    }
+    !boardValues.includes(null) && !this.checkWin(player) ?
+      draw = true
+    :
+      draw = false
 
     return draw
   }
 
-  clearBoard = () => {
+  setWinStyle = (row) => {
+    row.forEach(cell => {
+      return document.getElementById(`cell-${cell}`).classList.add('winner')
+    })
+  }
+
+  resetGame = () => {
+    let els = document.querySelectorAll('.cell.winner')
+    for (let i = 0; i < els.length; i++) {
+      els[i].classList.remove('winner')
+    }
     this.setState({
       gameBoard: {
         0: null,
@@ -120,7 +134,8 @@ class App extends Component {
       },
       message: '',
       gameOver: false,
-      player: 'X'
+      player: 'X',
+      winningRow: []
     })
   }
 
@@ -136,12 +151,20 @@ class App extends Component {
 
         <div className="board">
           {Object.keys(gameBoard).map((cell => (
-            <div className={`cell ${gameBoard[cell] !== null ? `taken-${gameBoard[cell]}` : ''}`} id={`pos-${cell}`} onClick={() => this.makeMove(cell, player)}>{gameBoard[cell]}</div>
+            <div
+              key={cell}
+              id={`cell-${cell}`}
+              className="cell"
+              onClick={() => this.makeMove(cell, player)}>
+                {gameBoard[cell]}
+            </div>
           )))}
 
         </div>
 
-        { gameOver && <button className="reset" onClick={this.clearBoard}>New Game</button> }
+        { gameOver &&
+          <button className="reset" onClick={this.resetGame}>New Game</button>
+        }
       </div>
     )
   }
