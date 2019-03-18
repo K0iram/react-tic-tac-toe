@@ -27,7 +27,9 @@ class App extends Component {
       8: null
     },
     gameOver: false,
-    winningRow: []
+    winningRow: [],
+    X: 0,
+    O: 0
   }
 
   togglePlayer = () => (
@@ -52,16 +54,17 @@ class App extends Component {
     gameBoard[position] = player
 
     if (this.checkWin(player)) {
-      this.setState({
+      return this.setState({
         gameOver: true,
-        message: `Player ${player} has won!`
+        message: `Player ${player} has won!`,
+        [player]:  this.state[player] + 1
       })
     }
 
     if (this.checkDraw(player)) {
-      this.setState({
+      return this.setState({
         gameOver: true,
-        message: `It's a draw!`
+        message: `It's a draw!`,
       })
     }
 
@@ -141,7 +144,7 @@ class App extends Component {
 
 
   render() {
-    const { player, gameBoard, message, gameOver } = this.state
+    const { player, gameBoard, message, gameOver, X, O } = this.state
 
     return (
       <div className="App">
@@ -149,17 +152,23 @@ class App extends Component {
           { message !== '' && <h1 className="banner">{message}</h1> }
         </div>
 
-        <div className="board">
-          {Object.keys(gameBoard).map((cell => (
-            <div
-              key={cell}
-              id={`cell-${cell}`}
-              className="cell"
-              onClick={() => this.makeMove(cell, player)}>
-                {gameBoard[cell]}
-            </div>
-          )))}
-
+        <div className="game-container">
+          <div className="game-counter">
+            <h3>Score</h3>
+            <h5>X: {X}</h5>
+            <h5>O: {O}</h5>
+          </div>
+          <div className="board">
+            {Object.keys(gameBoard).map((cell => (
+              <div
+                key={cell}
+                id={`cell-${cell}`}
+                className="cell"
+                onClick={() => this.makeMove(cell, player)}>
+                  {gameBoard[cell]}
+              </div>
+            )))}
+          </div>
         </div>
 
         { gameOver &&
