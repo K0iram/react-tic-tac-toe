@@ -89,7 +89,6 @@ class App extends Component {
         if (positionStore.length >= 3) {
           this.setWinStyle(winRow)
           playerHasWon = true
-          break
         }
       }
       if(playerHasWon){
