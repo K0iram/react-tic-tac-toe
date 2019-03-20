@@ -1,31 +1,14 @@
 import React, { Component } from 'react'
 import './App.css'
-
-const winningRows = [
-  [0, 1, 2],
-  [3, 4, 5],
-  [6, 7, 8],
-  [0, 3, 6],
-  [1, 4, 7],
-  [2, 5, 8],
-  [6, 4, 2],
-  [0, 4, 8]
-]
+import { emptyBoard, winningRows } from './data'
+import Board from './components/board'
+import ScoreBoard from './components/scoreBoard'
+import Banner from './components/banner'
 
 class App extends Component {
   state = {
     player: 'X',
-    gameBoard: {
-      0: null,
-      1: null,
-      2: null,
-      3: null,
-      4: null,
-      5: null,
-      6: null,
-      7: null,
-      8: null
-    },
+    gameBoard: emptyBoard,
     gameOver: false,
     winningRow: [],
     X: 0,
@@ -112,17 +95,7 @@ class App extends Component {
     }
 
     this.setState({
-      gameBoard: {
-        0: null,
-        1: null,
-        2: null,
-        3: null,
-        4: null,
-        5: null,
-        6: null,
-        7: null,
-        8: null
-      },
+      gameBoard: emptyBoard,
       message: '',
       gameOver: false,
       player: 'X',
@@ -136,27 +109,14 @@ class App extends Component {
 
     return (
       <div className="App">
-        <div className="banner-container">
-          { message !== '' && <h1 className="banner">{message}</h1> }
-        </div>
-
+        <Banner message={message}/>
         <div className="game-container">
-          <div className="game-counter">
-            <h3>Score</h3>
-            <h5>X: {X}</h5>
-            <h5>O: {O}</h5>
-          </div>
-          <div className="board">
-            {Object.keys(gameBoard).map((cell => (
-              <div
-                key={cell}
-                id={`cell-${cell}`}
-                className="cell"
-                onClick={() => this.makeMove(cell, player)}>
-                  {gameBoard[cell]}
-              </div>
-            )))}
-          </div>
+          <ScoreBoard playerX={X} playerO={O}/>
+          <Board
+            board={gameBoard}
+            makeMove={this.makeMove}
+            player={player}
+          />
         </div>
 
         { gameOver &&
