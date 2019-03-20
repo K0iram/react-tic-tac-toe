@@ -33,11 +33,9 @@ class App extends Component {
   }
 
   togglePlayer = () => (
-    this.state.player === "X"
-      ?
-      this.setState({player: "O"})
-      :
-      this.setState({player: "X"})
+    this.setState((prevState) => {
+      return { player: prevState.player === 'X' ? 'O' : 'X' }
+    })
   )
 
   makeMove = (position, player) => {
@@ -61,23 +59,18 @@ class App extends Component {
       })
     }
 
-    if (this.checkDraw(player)) {
-      return this.setState({
-        gameOver: true,
-        message: `It's a draw!`,
-      })
-    }
-
     this.togglePlayer()
   }
 
   checkWin = (player) => {
     const { gameBoard } = this.state
+    const boardValues = Object.values(gameBoard)
     let playerHasWon = false
 
     for (let i = 0; i < winningRows.length; i++) {
       let positionStore = []
       let winRow = []
+
       for (let j = 0; j < winningRows[i].length; j++) {
         let currentPosition = winningRows[i][j]
 
@@ -91,24 +84,19 @@ class App extends Component {
           playerHasWon = true
         }
       }
-      if(playerHasWon){
+      if(playerHasWon) {
         break
       }
     }
 
+    if(!boardValues.includes(null) && !playerHasWon) {
+      this.setState({
+        gameOver: true,
+        message: `It's a draw!`,
+      })
+    }
+
     return playerHasWon
-  }
-
-  checkDraw = (player) => {
-    const boardValues = Object.values(this.state.gameBoard)
-    let draw = false
-
-    !boardValues.includes(null) && !this.checkWin(player) ?
-      draw = true
-    :
-      draw = false
-
-    return draw
   }
 
   setWinStyle = (row) => {
@@ -122,6 +110,7 @@ class App extends Component {
     for (let i = 0; i < els.length; i++) {
       els[i].classList.remove('winner')
     }
+
     this.setState({
       gameBoard: {
         0: null,
