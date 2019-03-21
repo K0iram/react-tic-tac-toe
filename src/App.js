@@ -89,17 +89,11 @@ class App extends Component {
   }
 
   setWinStyle = (row) => {
-    row.forEach(cell => {
-      return document.getElementById(`cell-${cell}`).classList.add('winner')
-    })
+    this.setState({winningRow: row})
   }
 
   resetGame = () => {
     const initialBoard = Object.assign({}, emptyBoard)
-    let els = document.querySelectorAll('.cell.winner')
-    for (let i = 0; i < els.length; i++) {
-      els[i].classList.remove('winner')
-    }
     this.setState({
       gameBoard: initialBoard,
       message: '',
@@ -111,7 +105,7 @@ class App extends Component {
 
 
   render() {
-    const { player, gameBoard, message, gameOver, X, O } = this.state
+    const { player, gameBoard, message, gameOver, X, O, winningRow } = this.state
 
     return (
       <div className="App">
@@ -122,6 +116,7 @@ class App extends Component {
             board={gameBoard}
             makeMove={this.makeMove}
             player={player}
+            winRow={winningRow}
           />
         </div>
 
