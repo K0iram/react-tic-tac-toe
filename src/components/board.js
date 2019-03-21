@@ -3,9 +3,10 @@ import React from 'react'
 
 const Board = props => {
   const { board, player, makeMove } = props
+  const tiles = Object.keys(board)
   return (
     <div className="board">
-      {Object.keys(board).map((cell => (
+      {tiles.map((cell => (
         <div
           key={cell}
           id={`cell-${cell}`}

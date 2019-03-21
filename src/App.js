@@ -6,13 +6,19 @@ import ScoreBoard from './components/scoreBoard'
 import Banner from './components/banner'
 
 class App extends Component {
-  state = {
-    player: 'X',
-    gameBoard: emptyBoard,
-    gameOver: false,
-    winningRow: [],
-    X: 0,
-    O: 0
+  constructor(props) {
+    super(props)
+
+    const initialBoard = Object.assign({}, emptyBoard)
+
+    this.state = {
+      player: 'X',
+      gameBoard: initialBoard,
+      gameOver: false,
+      winningRow: [],
+      X: 0,
+      O: 0
+    }
   }
 
   togglePlayer = () => (
@@ -89,13 +95,13 @@ class App extends Component {
   }
 
   resetGame = () => {
+    const initialBoard = Object.assign({}, emptyBoard)
     let els = document.querySelectorAll('.cell.winner')
     for (let i = 0; i < els.length; i++) {
       els[i].classList.remove('winner')
     }
-
     this.setState({
-      gameBoard: emptyBoard,
+      gameBoard: initialBoard,
       message: '',
       gameOver: false,
       player: 'X',
