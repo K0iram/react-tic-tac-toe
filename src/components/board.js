@@ -1,6 +1,5 @@
 import React from 'react'
 
-
 const Board = props => {
   const { board, player, makeMove, winRow } = props
   const tiles = Object.keys(board)

@@ -31,7 +31,7 @@ class App extends Component {
     const { gameBoard, gameOver } = this.state
 
     if(gameOver){
-      return
+      return false
     }
 
     if(gameBoard[position] !== null) {
@@ -62,12 +62,10 @@ class App extends Component {
 
       for (let j = 0; j < winningRows[i].length; j++) {
         let currentPosition = winningRows[i][j]
-
         if (gameBoard[currentPosition] === player) {
           positionStore.push(player)
           winRow.push(currentPosition)
         }
-
         if (positionStore.length >= 3) {
           this.setWinStyle(winRow)
           playerHasWon = true
@@ -121,7 +119,9 @@ class App extends Component {
         </div>
 
         { gameOver &&
-          <button className="reset" onClick={this.resetGame}>New Game</button>
+          <div className="reset">
+            <button className="reset" onClick={this.resetGame}>New Game</button>
+          </div>
         }
       </div>
     )
