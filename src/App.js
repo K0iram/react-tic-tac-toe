@@ -4,6 +4,7 @@ import { emptyBoard, winningRows } from './data'
 import Board from './components/board'
 import ScoreBoard from './components/scoreBoard'
 import Banner from './components/banner'
+import {signUp, signIn} from './api'
 
 class App extends Component {
   constructor(props) {
@@ -17,7 +18,10 @@ class App extends Component {
       gameOver: false,
       winningRow: [],
       X: 0,
-      O: 0
+      O: 0,
+      email: '',
+      username: '',
+      password: ''
     }
   }
 
@@ -101,9 +105,38 @@ class App extends Component {
     })
   }
 
+  onInputChange = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  onSignUp = (e) => {
+    e.preventDefault()
+    const {email, username, password} = this.state
+    const cred = {
+      "username": username,
+      "email": email,
+      "password": password
+    }
+
+    signUp(cred).then(data => console.log(data))
+  }
+
+   onSignIn = (e) => {
+    e.preventDefault()
+    const {email, password} = this.state
+    const user = {
+      "email": email,
+      "password": password
+    }
+
+    signIn(user).then(data => console.log(data))
+  }
+
 
   render() {
-    const { player, gameBoard, message, gameOver, X, O, winningRow } = this.state
+    const { player, gameBoard, message, gameOver, X, O, winningRow, email, username, password } = this.state
 
     return (
       <div className="App">
@@ -123,6 +156,22 @@ class App extends Component {
             <button className="reset" onClick={this.resetGame}>New Game</button>
           </div>
         }
+
+        <div>
+          <form onSubmit={this.onSignUp}>
+            <input type="text" value={email} placeholder="Email" name="email" onChange={this.onInputChange}/>
+            <input type="text" value={username} placeholder="Username" name="username" onChange={this.onInputChange}/>
+            <input type="text" value={password} placeholder="Password" name="password" onChange={this.onInputChange}/>
+            <button type="submit">Sign Up</button>
+          </form>
+        </div>
+        <div>
+          <form onSubmit={this.onSignIn}>
+            <input type="text" value={email} placeholder="Email" name="email" onChange={this.onInputChange}/>
+            <input type="text" value={password} placeholder="Password" name="password" onChange={this.onInputChange}/>
+            <button type="submit">Sign In</button>
+          </form>
+        </div>
       </div>
     )
   }
