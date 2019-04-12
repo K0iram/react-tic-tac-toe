@@ -9,7 +9,7 @@ class App extends Component {
   constructor(props) {
     super(props)
 
-    const initialBoard = Object.assign({}, emptyBoard)
+    const initialBoard = Array(9).fill(null)
 
     this.state = {
       player: 'X',
@@ -53,7 +53,6 @@ class App extends Component {
 
   checkWin = (player) => {
     const { gameBoard } = this.state
-    const boardValues = Object.values(gameBoard)
     let playerHasWon = false
 
     for (let i = 0; i < winningRows.length; i++) {
@@ -76,7 +75,7 @@ class App extends Component {
       }
     }
 
-    if(!boardValues.includes(null) && !playerHasWon) {
+    if(!gameBoard.includes(null) && !playerHasWon) {
       this.setState({
         gameOver: true,
         message: `It's a draw!`,
@@ -91,7 +90,7 @@ class App extends Component {
   }
 
   resetGame = () => {
-    const initialBoard = Object.assign({}, emptyBoard)
+    const initialBoard = Array(9).fill(null)
     this.setState({
       gameBoard: initialBoard,
       message: '',

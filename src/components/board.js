@@ -2,16 +2,15 @@ import React from 'react'
 
 const Board = props => {
   const { board, player, makeMove, winRow } = props
-  const tiles = Object.keys(board)
   return (
     <div className="board">
-      {tiles.map((cell => (
+      {board.map(((cell, i) => (
         <div
-          key={cell}
-          id={`cell-${cell}`}
-          className={winRow.includes(Number(cell)) ? 'cell winner' : 'cell'}
-          onClick={() => makeMove(cell, player)}>
-            {board[cell]}
+          key={i}
+          id={`cell-${i}`}
+          className={winRow.includes(Number(i)) ? 'cell winner' : 'cell'}
+          onClick={() => makeMove(i, player)}>
+            {cell}
         </div>
       )))}
     </div>
